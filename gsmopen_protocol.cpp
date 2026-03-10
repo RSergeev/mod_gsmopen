@@ -1031,7 +1031,7 @@ int gsmopen_serial_read_AT(private_t *tech_pvt, int look_for_ack, int timeout_us
 						tech_pvt->home_network_registered = 1;
 						tech_pvt->roaming_registered = 0;
 					} else {
-						ERRORA("|%s| CELLPHONE is registered to a ROAMING network\n", GSMOPEN_P_LOG, tech_pvt->line_array.result[i]);
+						CRITA("|%s| CELLPHONE is registered to a ROAMING network\n", GSMOPEN_P_LOG, tech_pvt->line_array.result[i]);
 						tech_pvt->not_registered = 0;
 						tech_pvt->home_network_registered = 0;
 						tech_pvt->roaming_registered = 1;

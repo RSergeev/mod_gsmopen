@@ -996,6 +996,12 @@ static switch_call_cause_t channel_outgoing_channel(switch_core_session_t *sessi
 
 			switch_copy_string(interface_name, outbound_profile->destination_number, 255);
 			slash = strrchr(interface_name, '/');
+			if (!slash) {
+				ERRORA("Doh! destination number must be in format gsmopen/<interface>/<number>\n", GSMOPEN_P_LOG);
+				switch_core_session_destroy(new_session);
+				switch_mutex_unlock(globals.mutex);
+				return SWITCH_CAUSE_INVALID_NUMBER_FORMAT;
+			}
 			*slash = '\0';
 
 			switch_mutex_lock(globals.mutex);
@@ -1078,6 +1084,12 @@ static switch_call_cause_t channel_outgoing_channel(switch_core_session_t *sessi
 		tech_pvt->ob_calls++;
 
 		rdest = strchr(caller_profile->destination_number, '/');
+		if (!rdest) {
+			ERRORA("Doh! destination number must be in format gsmopen/<interface>/<number>\n", GSMOPEN_P_LOG);
+			switch_core_session_destroy(new_session);
+			switch_mutex_unlock(globals.mutex);
+			return SWITCH_CAUSE_INVALID_NUMBER_FORMAT;
+		}
 		*rdest++ = '\0';
 
 
@@ -2827,7 +2839,11 @@ int dump_event_full(private_t *tech_pvt, int is_alarm, int alarm_code, const cha
 	}
 
 	if (is_alarm) {
-		ERRORA("ALARM on interface %s: \n", GSMOPEN_P_LOG, tech_pvt->name);
+		if (alarm_code == ALARM_ROAMING_NETWORK_REGISTRATION) {
+			CRITA("ALARM on interface %s: \n", GSMOPEN_P_LOG, tech_pvt->name);
+		} else {
+			ERRORA("ALARM on interface %s: \n", GSMOPEN_P_LOG, tech_pvt->name);
+		}
 		status = switch_event_create_subclass(&event, SWITCH_EVENT_CUSTOM, MY_EVENT_ALARM);
 	} else {
 		DEBUGA_GSMOPEN("DUMP on interface %s: \n", GSMOPEN_P_LOG, tech_pvt->name);
