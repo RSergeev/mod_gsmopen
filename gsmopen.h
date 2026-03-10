@@ -533,7 +533,13 @@ int gsmopen_serial_write_AT(private_t *tech_pvt, const char *data);
 int gsmopen_serial_write_AT_nocr(private_t *tech_pvt, const char *data);
 int gsmopen_serial_write_AT_ack(private_t *tech_pvt, const char *data);
 int gsmopen_serial_write_AT_ack_nocr_longtime(private_t *tech_pvt, const char *data);
+#ifdef __cplusplus
+extern "C" {
+#endif
 int gsmopen_serial_write_AT_noack(private_t *tech_pvt, const char *data);
+#ifdef __cplusplus
+}
+#endif
 int gsmopen_serial_write_AT_expect1(private_t *tech_pvt, const char *data, const char *expected_string, int expect_crlf, int seconds);
 int gsmopen_serial_AT_expect(private_t *tech_pvt, const char *expected_string, int expect_crlf, int seconds);
 int gsmopen_serial_read_AT(private_t *tech_pvt, int look_for_ack, int timeout_usec, int timeout_sec, const char *expected_string, int expect_crlf);

@@ -2170,6 +2170,9 @@ int gsmopen_serial_write_AT_nocr(private_t *tech_pvt, const char *data)
 	return howmany;
 }
 
+#ifdef __cplusplus
+extern "C"
+#endif
 int gsmopen_serial_write_AT_noack(private_t *tech_pvt, const char *data)
 {
 
